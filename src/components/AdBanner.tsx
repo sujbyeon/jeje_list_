@@ -10,7 +10,7 @@ const AD_ITEMS = [
 
 export function AdBanner({}: AdBannerProps) {
   return (
-    <div className="bg-card border border-border border-l-4 border-l-gold px-3 md:px-6 py-2 md:py-4 mb-4 md:mb-6 flex items-center justify-center gap-1.5 md:gap-8 flex-nowrap overflow-x-auto scrollbar-hide">
+    <div className="bg-card border border-border border-l-4 border-l-gold px-2 md:px-6 py-2 md:py-4 mb-4 md:mb-6 flex items-center justify-between md:justify-center gap-0 md:gap-8 flex-nowrap">
       {AD_ITEMS.map((item, i) => (
         <a
           key={i}
