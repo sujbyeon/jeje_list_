@@ -120,14 +120,7 @@ export function openNaverMap(address: string, locUrl?: string) {
 }
 
 export function shareKakao(item: ListingItem): Promise<boolean> {
-  const text = `[재개발 매물] ${item['구역명']} - ${item['물건명']}\n매매가: ${formatPrice(toNumMan(item['거래가(숫자)']))}\n대지 ${item['공급']}㎡ · 전용 ${item['전용']}㎡`;
-  const fullText = text + '\n' + (item['상세보기'] || '');
-
-  if (navigator.share) {
-    return navigator.share({ title: '재개발 매물 정보', text, url: item['상세보기'] })
-      .then(() => true)
-      .catch(() => copyToClipboard(fullText));
-  }
+  const fullText = `[재개발 매물] ${item['구역명']} - ${item['물건명']}\n매매가: ${formatPrice(toNumMan(item['거래가(숫자)']))}\n대지 ${item['공급']}㎡ · 전용 ${item['전용']}㎡\n${item['상세보기'] || ''}`;
   return copyToClipboard(fullText);
 }
 
