@@ -230,18 +230,3 @@ function FilterTier({ step, label, active, items, selected, onSelect }: {
   );
 }
 
-function TierConnector({ active }: { active: boolean }) {
-  const solidColor = active ? 'bg-gold' : 'bg-border';
-  return (
-    <div className="flex items-stretch">
-      <div className={`w-14 md:w-20 shrink-0 flex items-center justify-center border-r border-border bg-secondary/30 relative h-7`}>
-        <div className={`absolute top-0 left-1/2 w-0.5 h-[calc(50%-12px)] -translate-x-1/2 ${solidColor}`} />
-        <div className={`absolute bottom-0 left-1/2 w-0.5 h-[calc(50%-12px)] -translate-x-1/2 ${solidColor}`} />
-        <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] relative z-10 border-2 transition-all ${active ? 'border-gold text-gold bg-card' : 'border-border text-muted-foreground bg-card'}`}>
-          ▼
-        </div>
-      </div>
-      <div className="flex-1" />
-    </div>
-  );
-}
