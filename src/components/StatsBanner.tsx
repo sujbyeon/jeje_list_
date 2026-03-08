@@ -50,13 +50,15 @@ export function StatsBanner({
   );
 }
 
-function BadgeFilterBtn({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
+function BadgeFilterBtn({ active, onClick, label, children }: { active: boolean; onClick: () => void; label: string; children: React.ReactNode }) {
   return (
-    <span
+    <button
+      type="button"
       onClick={onClick}
-      className={`cursor-pointer px-2 py-0.5 rounded-full border-[1.5px] transition-all select-none inline-flex items-center gap-1 ${active ? 'border-navy bg-primary/5' : 'border-transparent hover:bg-foreground/5'}`}
+      className={`cursor-pointer px-3 py-1.5 rounded-md border-[1.5px] transition-all select-none inline-flex items-center gap-1.5 text-xs font-bold ${active ? 'border-primary bg-primary/10 text-navy shadow-sm' : 'border-border bg-secondary/50 text-muted-foreground hover:bg-secondary hover:border-primary/50 hover:text-foreground'}`}
     >
       {children}
-    </span>
+      <span className="text-[10px] font-medium opacity-80">{label}</span>
+    </button>
   );
 }
