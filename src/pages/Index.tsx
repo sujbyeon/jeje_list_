@@ -24,7 +24,7 @@ const Index = () => {
   const [badgeFilter, setBadgeFilter] = useState<BadgeFilterType>(null);
   const [showBadgeModal, setShowBadgeModal] = useState(false);
   const [showStats, setShowStats] = useState(false);
-  const [showMapModal, setShowMapModal] = useState(false);
+  const [showCompare, setShowCompare] = useState(false);
   const [compareMode, setCompareMode] = useState(false);
   const [compareIds, setCompareIds] = useState<string[]>([]);
   const [showCompare, setShowCompare] = useState(false);
@@ -176,7 +176,7 @@ const Index = () => {
           onSortChange={setSortOption}
           favMode={favMode}
           onToggleFavMode={() => setFavMode(!favMode)}
-          onOpenMap={openMapModal}
+          
         />
 
         {/* Compare floating bar */}
