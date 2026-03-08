@@ -61,14 +61,39 @@ export function CompareModal({ items, onClose }: CompareModalProps) {
 
   const handleSaveImage = async () => {
     if (!tableRef.current) return;
+    const wrapper = tableRef.current.parentElement;
     try {
+      // Temporarily remove overflow constraints to capture full table
+      const prevTableOverflow = tableRef.current.style.overflow;
+      tableRef.current.style.overflow = 'visible';
+      if (wrapper) {
+        wrapper.dataset.prevMaxH = wrapper.style.maxHeight;
+        wrapper.dataset.prevOverflow = wrapper.style.overflow;
+        wrapper.style.maxHeight = 'none';
+        wrapper.style.overflow = 'visible';
+      }
+
       const dataUrl = await toPng(tableRef.current, { backgroundColor: '#ffffff', pixelRatio: 2 });
+
+      // Restore styles
+      tableRef.current.style.overflow = prevTableOverflow;
+      if (wrapper) {
+        wrapper.style.maxHeight = wrapper.dataset.prevMaxH || '';
+        wrapper.style.overflow = wrapper.dataset.prevOverflow || '';
+      }
+
       const link = document.createElement('a');
       link.download = `매물비교_${new Date().toLocaleDateString('ko-KR')}.png`;
       link.href = dataUrl;
       link.click();
       toast.success('이미지가 저장되었습니다!');
     } catch {
+      // Restore styles on error
+      tableRef.current.style.overflow = '';
+      if (wrapper) {
+        wrapper.style.maxHeight = '';
+        wrapper.style.overflow = '';
+      }
       toast.error('이미지 저장에 실패했습니다.');
     }
   };
