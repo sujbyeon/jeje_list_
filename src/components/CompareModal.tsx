@@ -123,7 +123,25 @@ export function CompareModal({ items, onClose }: CompareModalProps) {
     try {
       const headers = ['항목', ...sortedItems.map(i => `${i['구역명']} - ${i['물건명']}`)];
       const rows = ROW_DEFS.map(row => [row.label, ...sortedItems.map(i => row.getValue(i))]);
+      // Add link row
+      rows.push(['상세보기', ...sortedItems.map(i => i['상세보기'] || '-')]);
       const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+
+      // Add hyperlinks to header row and link row
+      sortedItems.forEach((item, idx) => {
+        const col = idx + 1; // column B, C, D...
+        const link = item['상세보기'];
+        if (link) {
+          // Header cell hyperlink
+          const headerCell = XLSX.utils.encode_cell({ r: 0, c: col });
+          if (ws[headerCell]) ws[headerCell].l = { Target: link, Tooltip: '상세보기' };
+          // Link row hyperlink
+          const linkRow = rows.length; // last row (0-indexed = headers + rows.length - 1, but aoa includes headers so row index = rows.length)
+          const linkCell = XLSX.utils.encode_cell({ r: linkRow, c: col });
+          if (ws[linkCell]) ws[linkCell].l = { Target: link, Tooltip: '상세보기' };
+        }
+      });
+
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, '매물비교');
       XLSX.writeFile(wb, `매물비교_${new Date().toLocaleDateString('ko-KR')}.xlsx`);
