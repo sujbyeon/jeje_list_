@@ -151,7 +151,14 @@ const MapPage = () => {
             매물 데이터를 불러오는 중...
           </div>
         ) : (
-          <div id="fullMap" className="w-full h-full" />
+          <>
+            <div id="fullMap" className="w-full h-full" />
+            {mapError && (
+              <div className="absolute top-4 left-4 right-4 bg-destructive/10 border border-destructive/30 text-destructive text-xs font-semibold p-3 z-20">
+                ⚠️ {mapError}
+              </div>
+            )}
+          </>
         )}
 
         {/* Selected item panel */}
