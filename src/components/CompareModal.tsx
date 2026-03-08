@@ -99,24 +99,22 @@ export function CompareModal({ items, onClose }: CompareModalProps) {
       <div className="bg-card max-w-[900px] w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 relative" onClick={e => e.stopPropagation()}>
         <button onClick={onClose} className="absolute top-5 right-5 bg-transparent border-none text-2xl text-muted-foreground cursor-pointer leading-none hover:text-navy">×</button>
         
-        <div className="flex items-center justify-between mb-6 pr-10">
-          <h2 className="text-xl md:text-2xl font-extrabold text-navy">매물 비교 ({items.length}개)</h2>
-          <div className="flex gap-2">
-            <button
-              onClick={handleSaveImage}
-              className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold border border-border bg-secondary/50 text-foreground cursor-pointer hover:bg-secondary transition-colors"
-            >
-              <Image size={14} />
-              이미지 저장
-            </button>
-            <button
-              onClick={handleSaveExcel}
-              className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold border border-border bg-secondary/50 text-foreground cursor-pointer hover:bg-secondary transition-colors"
-            >
-              <FileSpreadsheet size={14} />
-              엑셀 저장
-            </button>
-          </div>
+        <h2 className="text-xl md:text-2xl font-extrabold text-navy mb-4 pr-10">매물 비교 ({items.length}개)</h2>
+        <div className="flex flex-wrap gap-2 mb-6">
+          <button
+            onClick={handleSaveImage}
+            className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-bold border-2 border-primary bg-primary/10 text-primary cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
+          >
+            <Image size={16} />
+            이미지 저장
+          </button>
+          <button
+            onClick={handleSaveExcel}
+            className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-bold border-2 border-primary bg-primary/10 text-primary cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
+          >
+            <FileSpreadsheet size={16} />
+            엑셀 저장
+          </button>
         </div>
 
         <div className="overflow-x-auto" ref={tableRef}>
