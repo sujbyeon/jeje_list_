@@ -59,13 +59,21 @@ export function FilterPanel({
   else if (breadcrumbParts.length === 1 && currentRegion !== '전체') hint = '← 유형을 선택하세요';
   else if (currentZone === '전체') hint = '← 구역을 선택하세요';
 
-  const typeItems: TierItem[] = [
-    { key: '전체', label: '전체', count: regionPool.length },
-    ...TYPE_ORDER.filter(t => typeCounts[t]).map(t => ({
+  const typeItems: TierItem[] = useMemo(() => {
+    const ordered = TYPE_ORDER.filter(t => typeCounts[t]).map(t => ({
       key: t, label: t, count: typeCounts[t],
       activeColor: TYPE_TAB_COLORS[t],
-    })),
-  ];
+    }));
+    const extra = Object.keys(typeCounts)
+      .filter(t => !(TYPE_ORDER as readonly string[]).includes(t))
+      .sort()
+      .map(t => ({ key: t, label: t, count: typeCounts[t] }));
+    return [
+      { key: '전체', label: '전체', count: regionPool.length },
+      ...ordered,
+      ...extra,
+    ];
+  }, [typeCounts, regionPool.length]);
 
   const zoneItems: TierItem[] = [
     { key: '전체', label: '전체', count: typePool.length },
