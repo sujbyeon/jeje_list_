@@ -170,8 +170,17 @@ export function CompareModal({ items, onClose }: CompareModalProps) {
                 <th className="text-left py-3 px-3 text-muted-foreground font-bold text-xs">항목</th>
                 {sortedItems.map(item => (
                   <th key={item._id} className="text-left py-3 px-3 text-navy font-extrabold text-sm min-w-[150px]">
-                    {item['구역명']}<br />
-                    <span className="font-bold text-xs text-muted-foreground">{item['물건명']}</span>
+                    {item['상세보기'] ? (
+                      <a href={item['상세보기']} target="_blank" rel="noopener noreferrer" className="hover:text-gold underline underline-offset-2 transition-colors">
+                        {item['구역명']}<br />
+                        <span className="font-bold text-xs text-muted-foreground">{item['물건명']}</span>
+                      </a>
+                    ) : (
+                      <>
+                        {item['구역명']}<br />
+                        <span className="font-bold text-xs text-muted-foreground">{item['물건명']}</span>
+                      </>
+                    )}
                   </th>
                 ))}
               </tr>
