@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
-import { BarChart3, BookOpen, GitCompare, X } from 'lucide-react';
+import { BarChart3, BookOpen, GitCompare } from 'lucide-react';
 import { useListings, useFavorites } from '@/hooks/useListings';
 import { SortOption, BadgeFilterType } from '@/types/listing';
 import { toNumMan, formatPrice, getArea, getUnitPrice, computeZoneStats, getLatestDate } from '@/lib/listing-utils';
@@ -10,6 +10,7 @@ import { ListingCard } from '@/components/ListingCard';
 import { AdBanner } from '@/components/AdBanner';
 import { BadgeInfoModal } from '@/components/BadgeInfoModal';
 import { CompareModal } from '@/components/CompareModal';
+import { CompareFloatingButton } from '@/components/CompareFloatingButton';
 import { StatsCharts } from '@/components/StatsCharts';
 
 const Index = () => {
@@ -25,7 +26,7 @@ const Index = () => {
   const [badgeFilter, setBadgeFilter] = useState<BadgeFilterType>(null);
   const [showBadgeModal, setShowBadgeModal] = useState(false);
   const [showStats, setShowStats] = useState(false);
-  const [compareMode, setCompareMode] = useState(false);
+  
   const [compareIds, setCompareIds] = useState<string[]>([]);
   const [showCompare, setShowCompare] = useState(false);
 
@@ -148,11 +149,11 @@ const Index = () => {
             아이콘 의미
           </button>
           <button
-            onClick={() => { setCompareMode(!compareMode); if (compareMode) setCompareIds([]); }}
-            className={`flex items-center gap-1.5 text-[13px] font-bold px-4 py-2 cursor-pointer transition-all whitespace-nowrap rounded-none border ${compareMode ? 'bg-accent text-accent-foreground border-accent shadow-md' : 'bg-secondary/50 border-border text-foreground hover:bg-primary/5 hover:border-primary'}`}
+            onClick={() => { setCompareIds([]); }}
+            className={`flex items-center gap-1.5 text-[13px] font-bold px-4 py-2 cursor-pointer transition-all whitespace-nowrap rounded-none border ${compareIds.length > 0 ? 'bg-accent text-accent-foreground border-accent shadow-md' : 'bg-secondary/50 border-border text-foreground hover:bg-primary/5 hover:border-primary'}`}
           >
-            {compareMode ? <X size={15} /> : <GitCompare size={15} />}
-            {compareMode ? '비교 취소' : '매물 비교'}
+            <GitCompare size={15} />
+            {compareIds.length > 0 ? `비교 초기화 (${compareIds.length})` : '매물 비교'}
           </button>
         </div>
 
@@ -178,18 +179,6 @@ const Index = () => {
           
         />
 
-        {/* Compare floating bar */}
-        {compareMode && compareIds.length > 0 && (
-          <div className="sticky top-0 z-50 bg-card border border-gold p-3 mb-4 flex items-center justify-between animate-fade-in">
-            <span className="text-sm font-bold text-navy">{compareIds.length}개 매물 선택됨 (최대 10개)</span>
-            <button
-              onClick={() => setShowCompare(true)}
-              className="bg-primary text-primary-foreground px-4 py-2 text-sm font-bold cursor-pointer border-none hover:bg-gold transition-all"
-            >
-              비교하기
-            </button>
-          </div>
-        )}
 
         {filtered.length > 0 && (
           <StatsBanner
@@ -225,7 +214,7 @@ const Index = () => {
                 isFav={favorites.includes(item._id)}
                 onToggleFav={() => toggleFav(item._id)}
                 zoneStats={zoneStats}
-                isCompareMode={compareMode}
+                isCompareMode={true}
                 isSelected={compareIds.includes(item._id)}
                 onCompareToggle={() => toggleCompareId(item._id)}
               />
@@ -234,9 +223,16 @@ const Index = () => {
         </div>
       </div>
 
-      {/* Modals */}
+      {/* Modals & Floating UI */}
       {showBadgeModal && <BadgeInfoModal onClose={() => setShowBadgeModal(false)} />}
       {showCompare && <CompareModal items={compareItems} onClose={() => setShowCompare(false)} />}
+      <CompareFloatingButton
+        compareIds={compareIds}
+        items={compareItems}
+        onRemove={(id) => setCompareIds(prev => prev.filter(x => x !== id))}
+        onCompare={() => setShowCompare(true)}
+        onClearAll={() => setCompareIds([])}
+      />
 
     </div>
   );
