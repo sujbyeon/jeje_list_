@@ -223,9 +223,16 @@ const Index = () => {
         </div>
       </div>
 
-      {/* Modals */}
+      {/* Modals & Floating UI */}
       {showBadgeModal && <BadgeInfoModal onClose={() => setShowBadgeModal(false)} />}
       {showCompare && <CompareModal items={compareItems} onClose={() => setShowCompare(false)} />}
+      <CompareFloatingButton
+        compareIds={compareIds}
+        items={compareItems}
+        onRemove={(id) => setCompareIds(prev => prev.filter(x => x !== id))}
+        onCompare={() => setShowCompare(true)}
+        onClearAll={() => setCompareIds([])}
+      />
 
     </div>
   );
