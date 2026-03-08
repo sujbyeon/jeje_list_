@@ -1,11 +1,11 @@
 interface AdBannerProps {}
 
 const AD_ITEMS = [
-  { href: 'https://sujbyeon.github.io/seoul_jeje/', label: '초기구역 확인', content: '🗺️ 초기구역' },
-  { href: 'https://sujbyeon.github.io/apt_boonyang/', label: '수도권 분양권', content: '🏢 분양권' },
-  { href: 'https://blog.naver.com/chachalacha', label: '제작', content: '✍️ 수잔블로그' },
-  { href: 'https://blog.naver.com/po-tax/222638285211', label: '재개발 전문 세무상담', content: '⚖️ 세무회계평온' },
-  { href: 'https://contents.premium.naver.com/jejeguide/jejemvp', label: '프리미엄 매물 분석', content: '📈 추천매물스터디' },
+  { href: 'https://sujbyeon.github.io/seoul_jeje/', label: '초기구역 확인', content: '🗺️ 초기구역', mobileContent: '🗺️초기구역' },
+  { href: 'https://sujbyeon.github.io/apt_boonyang/', label: '수도권 분양권', content: '🏢 분양권', mobileContent: '🏢분양권' },
+  { href: 'https://blog.naver.com/chachalacha', label: '제작', content: '✍️ 수잔블로그', mobileContent: '✍️블로그' },
+  { href: 'https://blog.naver.com/po-tax/222638285211', label: '재개발 전문 세무상담', content: '⚖️ 세무회계평온', mobileContent: '⚖️세무' },
+  { href: 'https://contents.premium.naver.com/jejeguide/jejemvp', label: '프리미엄 매물 분석', content: '📈 추천매물스터디', mobileContent: '📈추천매물' },
 ];
 
 export function AdBanner({}: AdBannerProps) {
