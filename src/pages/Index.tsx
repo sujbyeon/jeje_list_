@@ -9,6 +9,7 @@ import { ListingCard } from '@/components/ListingCard';
 import { AdBanner } from '@/components/AdBanner';
 import { BadgeInfoModal } from '@/components/BadgeInfoModal';
 import { CompareModal } from '@/components/CompareModal';
+import { StatsCharts } from '@/components/StatsCharts';
 
 const Index = () => {
   const { data, loading } = useListings();
