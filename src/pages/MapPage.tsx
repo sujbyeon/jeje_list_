@@ -39,6 +39,13 @@ const MapPage = () => {
     markersRef.current.forEach(m => m.setMap(null));
     markersRef.current = [];
 
+    // Check if geocoder service is available
+    if (!naver.maps.Service) {
+      setMapError('지오코딩 서비스를 사용할 수 없습니다. 네이버 클라우드에서 도메인 등록이 전파되기까지 시간이 걸릴 수 있습니다.');
+      return;
+    }
+
+    setMapError(null);
     const bounds = new naver.maps.LatLngBounds();
     let geocoded = 0;
 
