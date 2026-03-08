@@ -124,35 +124,37 @@ const Index = () => {
     <div className="min-h-screen bg-background py-5 md:py-10 px-3.5 md:px-5">
       <div className="max-w-[1200px] mx-auto">
         {/* Header */}
-        <header className="mb-6 md:mb-10 border-l-[3px] border-l-gold pl-5 relative">
+        <header className="mb-4 md:mb-6 border-l-[3px] border-l-gold pl-5">
           <h1 className="text-3xl md:text-[42px] font-extrabold text-navy mb-2">재개발 구역 매물</h1>
           <p className="text-sm md:text-lg text-gold font-semibold">
             {loading ? '데이터 로딩 중...' : latestDate ? `${latestDate} 업데이트` : '매물 정보'}
           </p>
-          <div className="flex gap-2 mt-3 md:absolute md:top-0 md:right-0 md:mt-0">
-            <button
-              onClick={() => setShowStats(!showStats)}
-              className={`flex items-center gap-1.5 border text-[13px] font-bold px-4 py-2.5 cursor-pointer transition-all font-sans rounded-none ${showStats ? 'bg-primary text-primary-foreground border-primary shadow-md' : 'bg-card border-border text-foreground hover:bg-primary/5 hover:border-primary'}`}
-            >
-              <BarChart3 size={15} />
-              통계
-            </button>
-            <button
-              onClick={() => setShowBadgeModal(true)}
-              className="flex items-center gap-1.5 bg-card border border-border text-foreground text-[13px] font-bold px-4 py-2.5 cursor-pointer transition-all hover:bg-primary/5 hover:border-primary font-sans rounded-none"
-            >
-              <BookOpen size={15} />
-              아이콘 의미
-            </button>
-            <button
-              onClick={() => { setCompareMode(!compareMode); if (compareMode) setCompareIds([]); }}
-              className={`flex items-center gap-1.5 border text-[13px] font-bold px-4 py-2.5 cursor-pointer transition-all font-sans rounded-none ${compareMode ? 'bg-accent text-accent-foreground border-accent shadow-md' : 'bg-card border-border text-foreground hover:bg-primary/5 hover:border-primary'}`}
-            >
-              {compareMode ? <X size={15} /> : <GitCompare size={15} />}
-              {compareMode ? '비교 취소' : '매물 비교'}
-            </button>
-          </div>
         </header>
+
+        {/* Toolbar */}
+        <div className="flex gap-2 mb-4 bg-card border border-border p-2.5 overflow-x-auto scrollbar-hide">
+          <button
+            onClick={() => setShowStats(!showStats)}
+            className={`flex items-center gap-1.5 text-[13px] font-bold px-4 py-2 cursor-pointer transition-all whitespace-nowrap rounded-none border ${showStats ? 'bg-primary text-primary-foreground border-primary shadow-md' : 'bg-secondary/50 border-border text-foreground hover:bg-primary/5 hover:border-primary'}`}
+          >
+            <BarChart3 size={15} />
+            통계
+          </button>
+          <button
+            onClick={() => setShowBadgeModal(true)}
+            className="flex items-center gap-1.5 bg-secondary/50 border border-border text-foreground text-[13px] font-bold px-4 py-2 cursor-pointer transition-all hover:bg-primary/5 hover:border-primary whitespace-nowrap rounded-none"
+          >
+            <BookOpen size={15} />
+            아이콘 의미
+          </button>
+          <button
+            onClick={() => { setCompareMode(!compareMode); if (compareMode) setCompareIds([]); }}
+            className={`flex items-center gap-1.5 text-[13px] font-bold px-4 py-2 cursor-pointer transition-all whitespace-nowrap rounded-none border ${compareMode ? 'bg-accent text-accent-foreground border-accent shadow-md' : 'bg-secondary/50 border-border text-foreground hover:bg-primary/5 hover:border-primary'}`}
+          >
+            {compareMode ? <X size={15} /> : <GitCompare size={15} />}
+            {compareMode ? '비교 취소' : '매물 비교'}
+          </button>
+        </div>
 
         <AdBanner />
 
