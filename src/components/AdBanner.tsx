@@ -10,17 +10,17 @@ const AD_ITEMS = [
 
 export function AdBanner({}: AdBannerProps) {
   return (
-    <div className="bg-gradient-to-br from-card to-secondary border border-border border-l-4 border-l-gold px-6 py-4 mb-6 flex items-center justify-center gap-8 flex-wrap md:flex-nowrap">
+    <div className="bg-card border border-border border-l-4 border-l-gold px-3 md:px-6 py-2 md:py-4 mb-4 md:mb-6 flex items-center justify-center gap-1.5 md:gap-8 flex-nowrap overflow-x-auto scrollbar-hide">
       {AD_ITEMS.map((item, i) => (
         <a
           key={i}
           href={item.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="no-underline text-inherit flex flex-col items-center transition-all px-4 py-2 rounded-lg hover:bg-gold/10 hover:-translate-y-0.5"
+          className="no-underline text-inherit flex items-center md:flex-col transition-all px-2 md:px-4 py-1 md:py-2 rounded-lg hover:bg-gold/10 shrink-0"
         >
           <div className="text-[11px] text-muted-foreground mb-1 font-medium hidden md:block">{item.label}</div>
-          <div className="text-sm md:text-[14px] font-bold text-navy whitespace-nowrap overflow-hidden text-ellipsis max-w-full text-center">{item.content}</div>
+          <div className="text-[11px] md:text-[14px] font-bold text-navy whitespace-nowrap">{item.content}</div>
         </a>
       ))}
     </div>
