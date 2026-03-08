@@ -75,7 +75,7 @@ export function FilterPanel({
   // Tier 2 is visible when region is selected (not '전체')
   const showType = currentRegion !== '전체';
   // Tier 3 is visible when type is selected
-  const showZone = showType && currentType !== '전체';
+  const showZone = showType;
 
   return (
     <div className="bg-card border border-border shadow-sm mb-4 overflow-hidden">
