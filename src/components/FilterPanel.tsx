@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, RotateCcw } from 'lucide-react';
 import { ListingItem, TYPE_ORDER, TYPE_TAB_COLORS } from '@/types/listing';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -43,6 +43,12 @@ export function FilterPanel({
     return { list: z, counts };
   }, [typePool]);
 
+  const hasActiveFilter = currentRegion !== '전체' || currentType !== '전체' || currentZone !== '전체';
+
+  const handleReset = () => {
+    onRegionChange('전체');
+  };
+
   const breadcrumbParts: string[] = [];
   if (currentRegion !== '전체') breadcrumbParts.push(currentRegion);
   if (currentType !== '전체') breadcrumbParts.push(currentType);
@@ -83,6 +89,15 @@ export function FilterPanel({
           </span>
         ))}
         {hint && <span className="ml-auto text-xs text-muted-foreground font-medium hidden md:inline">{hint}</span>}
+        {hasActiveFilter && (
+          <button
+            onClick={handleReset}
+            className="ml-auto flex items-center gap-1 text-xs font-semibold text-muted-foreground hover:text-primary transition-colors cursor-pointer bg-transparent border-none whitespace-nowrap"
+          >
+            <RotateCcw size={12} />
+            초기화
+          </button>
+        )}
       </div>
 
       {/* Tier 1: Region - always visible */}
