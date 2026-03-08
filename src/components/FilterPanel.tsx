@@ -66,6 +66,11 @@ export function FilterPanel({
     ...zones.list.map(z => ({ key: z, label: z, count: zones.counts[z] })),
   ];
 
+  // Tier 2 is visible when region is selected (not '전체')
+  const showType = currentRegion !== '전체';
+  // Tier 3 is visible when type is selected
+  const showZone = showType && currentType !== '전체';
+
   return (
     <div className="bg-card border border-border shadow-sm mb-4 overflow-hidden">
       {/* Breadcrumb */}
@@ -80,7 +85,7 @@ export function FilterPanel({
         {hint && <span className="ml-auto text-[11px] text-muted-foreground font-medium hidden md:inline">{hint}</span>}
       </div>
 
-      {/* Tier 1: Region - always button style */}
+      {/* Tier 1: Region - always visible */}
       <FilterTier
         step={1}
         label="지역"
@@ -93,47 +98,53 @@ export function FilterPanel({
         onSelect={onRegionChange}
       />
 
-      {isMobile ? (
-        /* Mobile: Tier 2 & 3 as dropdowns in a compact row */
-        <div className="flex items-center gap-2 px-3 py-2.5 border-t border-border bg-secondary/20">
-          <FilterDropdown
-            step={2}
-            label="유형"
-            items={typeItems}
-            selected={currentType}
-            onSelect={onTypeChange}
-          />
-          <FilterDropdown
-            step={3}
-            label="구역"
-            items={zoneItems}
-            selected={currentZone}
-            onSelect={onZoneChange}
-          />
+      {/* Tier 2: Type - slides open when region selected */}
+      <div
+        className={`grid transition-all duration-300 ease-in-out ${
+          showType ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+        }`}
+      >
+        <div className="overflow-hidden">
+          {isMobile ? (
+            <div className="flex items-center gap-2 px-3 py-2.5 border-t border-border bg-secondary/20">
+              <FilterDropdown step={2} label="유형" items={typeItems} selected={currentType} onSelect={onTypeChange} />
+            </div>
+          ) : (
+            <FilterTier
+              step={2}
+              label="유형"
+              active={currentType !== '전체'}
+              items={typeItems}
+              selected={currentType}
+              onSelect={onTypeChange}
+            />
+          )}
         </div>
-      ) : (
-        /* Desktop: original tier layout */
-        <>
-          <TierConnector active={currentRegion !== '전체'} />
-          <FilterTier
-            step={2}
-            label="유형"
-            active={currentType !== '전체'}
-            items={typeItems}
-            selected={currentType}
-            onSelect={onTypeChange}
-          />
-          <TierConnector active={currentType !== '전체'} />
-          <FilterTier
-            step={3}
-            label="구역"
-            active={currentZone !== '전체'}
-            items={zoneItems}
-            selected={currentZone}
-            onSelect={onZoneChange}
-          />
-        </>
-      )}
+      </div>
+
+      {/* Tier 3: Zone - slides open when type selected */}
+      <div
+        className={`grid transition-all duration-300 ease-in-out ${
+          showZone ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+        }`}
+      >
+        <div className="overflow-hidden">
+          {isMobile ? (
+            <div className="flex items-center gap-2 px-3 py-2.5 border-t border-border bg-secondary/20">
+              <FilterDropdown step={3} label="구역" items={zoneItems} selected={currentZone} onSelect={onZoneChange} />
+            </div>
+          ) : (
+            <FilterTier
+              step={3}
+              label="구역"
+              active={currentZone !== '전체'}
+              items={zoneItems}
+              selected={currentZone}
+              onSelect={onZoneChange}
+            />
+          )}
+        </div>
+      </div>
     </div>
   );
 }
