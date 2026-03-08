@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { SortOption } from '@/types/listing';
 
 interface SearchBarProps {
@@ -7,13 +8,12 @@ interface SearchBarProps {
   onSortChange: (v: SortOption) => void;
   favMode: boolean;
   onToggleFavMode: () => void;
-  onOpenMap: () => void;
 }
 
 export function SearchBar({
   searchTerm, onSearchChange, sortOption, onSortChange,
-  favMode, onToggleFavMode, onOpenMap,
-}: SearchBarProps) {
+  favMode, onToggleFavMode,
+}: Omit<SearchBarProps, 'onOpenMap'> & { onOpenMap?: () => void }) {
   return (
     <div className="flex items-stretch bg-card border border-border border-t-0 mb-5">
       <input
@@ -38,12 +38,12 @@ export function SearchBar({
       >
         ★ 관심
       </button>
-      <button
-        onClick={onOpenMap}
-        className="px-4 py-3 border-none bg-card text-gold font-bold text-[13px] cursor-pointer transition-all min-h-[46px] whitespace-nowrap font-sans hover:bg-gold hover:text-card"
+      <Link
+        to="/map"
+        className="px-4 py-3 border-none bg-card text-accent font-bold text-[13px] cursor-pointer transition-all min-h-[46px] whitespace-nowrap font-sans hover:bg-accent hover:text-accent-foreground flex items-center no-underline"
       >
         🗺️ 지도
-      </button>
+      </Link>
     </div>
   );
 }
