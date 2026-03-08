@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
+import { ChevronDown } from 'lucide-react';
 import { ListingItem, TYPE_ORDER, TYPE_TAB_COLORS } from '@/types/listing';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface FilterPanelProps {
   data: ListingItem[];
@@ -15,6 +17,7 @@ export function FilterPanel({
   data, currentRegion, currentType, currentZone,
   onRegionChange, onTypeChange, onZoneChange,
 }: FilterPanelProps) {
+  const isMobile = useIsMobile();
   const regions = useMemo(() => [...new Set(data.map(i => i['지역']).filter(Boolean))], [data]);
 
   const regionPool = useMemo(() =>
@@ -46,9 +49,22 @@ export function FilterPanel({
   if (currentZone !== '전체') breadcrumbParts.push(currentZone);
 
   let hint = '';
-  if (breadcrumbParts.length === 0) hint = '← 아래에서 지역 · 유형 · 구역을 순서대로 선택하세요';
-  else if (breadcrumbParts.length === 1 && currentRegion !== '전체') hint = '← 유형을 선택하면 더 좁혀볼 수 있어요';
-  else if (currentZone === '전체') hint = '← 구역을 선택하면 더 좁혀볼 수 있어요';
+  if (breadcrumbParts.length === 0) hint = '← 지역 · 유형 · 구역을 선택하세요';
+  else if (breadcrumbParts.length === 1 && currentRegion !== '전체') hint = '← 유형을 선택하세요';
+  else if (currentZone === '전체') hint = '← 구역을 선택하세요';
+
+  const typeItems: TierItem[] = [
+    { key: '전체', label: '전체', count: regionPool.length },
+    ...TYPE_ORDER.filter(t => typeCounts[t]).map(t => ({
+      key: t, label: t, count: typeCounts[t],
+      activeColor: TYPE_TAB_COLORS[t],
+    })),
+  ];
+
+  const zoneItems: TierItem[] = [
+    { key: '전체', label: '전체', count: typePool.length },
+    ...zones.list.map(z => ({ key: z, label: z, count: zones.counts[z] })),
+  ];
 
   return (
     <div className="bg-card border border-border shadow-sm mb-4 overflow-hidden">
@@ -61,10 +77,10 @@ export function FilterPanel({
             <span className="text-navy font-bold">{p}</span>
           </span>
         ))}
-        {hint && <span className="ml-auto text-[11px] text-muted-foreground font-medium">{hint}</span>}
+        {hint && <span className="ml-auto text-[11px] text-muted-foreground font-medium hidden md:inline">{hint}</span>}
       </div>
 
-      {/* Tier 1: Region */}
+      {/* Tier 1: Region - always button style */}
       <FilterTier
         step={1}
         label="지역"
@@ -77,38 +93,47 @@ export function FilterPanel({
         onSelect={onRegionChange}
       />
 
-      <TierConnector active={currentRegion !== '전체'} />
-
-      {/* Tier 2: Type */}
-      <FilterTier
-        step={2}
-        label="유형"
-        active={currentType !== '전체'}
-        items={[
-          { key: '전체', label: '전체', count: regionPool.length },
-          ...TYPE_ORDER.filter(t => typeCounts[t]).map(t => ({
-            key: t, label: t, count: typeCounts[t],
-            activeColor: TYPE_TAB_COLORS[t],
-          })),
-        ]}
-        selected={currentType}
-        onSelect={onTypeChange}
-      />
-
-      <TierConnector active={currentType !== '전체'} />
-
-      {/* Tier 3: Zone */}
-      <FilterTier
-        step={3}
-        label="구역"
-        active={currentZone !== '전체'}
-        items={[
-          { key: '전체', label: '전체', count: typePool.length },
-          ...zones.list.map(z => ({ key: z, label: z, count: zones.counts[z] })),
-        ]}
-        selected={currentZone}
-        onSelect={onZoneChange}
-      />
+      {isMobile ? (
+        /* Mobile: Tier 2 & 3 as dropdowns in a compact row */
+        <div className="flex items-center gap-2 px-3 py-2.5 border-t border-border bg-secondary/20">
+          <FilterDropdown
+            step={2}
+            label="유형"
+            items={typeItems}
+            selected={currentType}
+            onSelect={onTypeChange}
+          />
+          <FilterDropdown
+            step={3}
+            label="구역"
+            items={zoneItems}
+            selected={currentZone}
+            onSelect={onZoneChange}
+          />
+        </div>
+      ) : (
+        /* Desktop: original tier layout */
+        <>
+          <TierConnector active={currentRegion !== '전체'} />
+          <FilterTier
+            step={2}
+            label="유형"
+            active={currentType !== '전체'}
+            items={typeItems}
+            selected={currentType}
+            onSelect={onTypeChange}
+          />
+          <TierConnector active={currentType !== '전체'} />
+          <FilterTier
+            step={3}
+            label="구역"
+            active={currentZone !== '전체'}
+            items={zoneItems}
+            selected={currentZone}
+            onSelect={onZoneChange}
+          />
+        </>
+      )}
     </div>
   );
 }
@@ -120,13 +145,52 @@ interface TierItem {
   activeColor?: string;
 }
 
+/* Dropdown for mobile tier 2 & 3 */
+function FilterDropdown({ step, label, items, selected, onSelect }: {
+  step: number; label: string;
+  items: TierItem[]; selected: string;
+  onSelect: (v: string) => void;
+}) {
+  const isActive = selected !== '전체';
+  const selectedItem = items.find(i => i.key === selected);
+
+  return (
+    <div className="flex-1 relative">
+      <div className="flex items-center gap-1.5 mb-1">
+        <div className={`w-4 h-4 rounded-full text-[9px] font-bold flex items-center justify-center ${isActive ? 'bg-primary text-primary-foreground' : 'bg-border text-muted-foreground'}`}>
+          {step}
+        </div>
+        <span className={`text-[10px] font-semibold ${isActive ? 'text-navy' : 'text-muted-foreground'}`}>{label}</span>
+      </div>
+      <div className="relative">
+        <select
+          value={selected}
+          onChange={(e) => onSelect(e.target.value)}
+          className={`w-full appearance-none bg-card border rounded-md px-3 py-2 pr-8 text-[12px] font-medium cursor-pointer transition-all outline-none ${
+            isActive
+              ? 'border-primary/30 text-navy bg-primary/5'
+              : 'border-border text-muted-foreground hover:border-primary/20'
+          }`}
+        >
+          {items.map(item => (
+            <option key={item.key} value={item.key}>
+              {item.label} ({item.count})
+            </option>
+          ))}
+        </select>
+        <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+      </div>
+    </div>
+  );
+}
+
 function FilterTier({ step, label, active, items, selected, onSelect }: {
   step: number; label: string; active: boolean;
   items: TierItem[]; selected: string;
   onSelect: (v: string) => void;
 }) {
   return (
-    <div className={`flex items-stretch border-b border-border last:border-b-0 transition-all ${active ? '' : ''}`}>
+    <div className={`flex items-stretch border-b border-border last:border-b-0 transition-all`}>
       <div className={`w-12 md:w-16 shrink-0 flex flex-col items-center justify-center gap-0.5 border-r border-border px-1 py-2 ${active ? 'bg-primary/5' : 'bg-secondary/30'}`}>
         <div className={`w-4.5 h-4.5 rounded-full text-[10px] font-bold flex items-center justify-center transition-all ${active ? 'bg-primary text-primary-foreground' : 'bg-border text-muted-foreground'}`}>
           {step}
@@ -140,16 +204,13 @@ function FilterTier({ step, label, active, items, selected, onSelect }: {
             onClick={() => onSelect(item.key)}
             className={`px-2.5 md:px-4 py-2 md:py-2.5 border-none border-r border-border bg-card cursor-pointer font-medium text-[11px] md:text-xs text-muted-foreground transition-all whitespace-nowrap shrink-0 min-h-[38px] md:min-h-[40px] flex items-center gap-1 relative hover:bg-secondary/50 hover:text-foreground
               ${selected === item.key ? 'text-navy font-bold bg-card' : ''}`}
-            style={selected === item.key && item.activeColor ? {} : {}}
           >
             {item.label}
             <span className={`text-[10px] font-semibold px-1.5 py-px rounded-lg min-w-[20px] text-center ${selected === item.key ? 'bg-primary/10 text-navy' : 'bg-secondary text-muted-foreground'}`}>
               {item.count}
             </span>
             {selected === item.key && (
-              <span
-                className="absolute bottom-0 left-0 right-0 h-[2px] rounded-t-sm bg-gold"
-              />
+              <span className="absolute bottom-0 left-0 right-0 h-[2px] rounded-t-sm bg-gold" />
             )}
           </button>
         ))}
@@ -159,7 +220,6 @@ function FilterTier({ step, label, active, items, selected, onSelect }: {
 }
 
 function TierConnector({ active }: { active: boolean }) {
-  const lineColor = active ? 'bg-gradient-to-b from-primary to-gold' : 'bg-border';
   const solidColor = active ? 'bg-gold' : 'bg-border';
   return (
     <div className="flex items-stretch">
