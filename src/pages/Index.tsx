@@ -205,6 +205,9 @@ const Index = () => {
             onBadgeFilter={setBadgeFilter}
           />
         )}
+        {showStats && !loading && filtered.length > 0 && (
+          <StatsCharts data={filtered} />
+        )}
 
         {/* Listings */}
         <div className="grid gap-3">
