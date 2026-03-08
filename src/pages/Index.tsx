@@ -132,20 +132,23 @@ const Index = () => {
           <div className="flex gap-2 mt-3 md:absolute md:top-0 md:right-0 md:mt-0">
             <button
               onClick={() => setShowStats(!showStats)}
-              className={`border text-[13px] font-semibold px-3.5 py-2 cursor-pointer transition-all font-sans ${showStats ? 'bg-gold/10 border-gold text-gold' : 'bg-card border-border text-muted-foreground hover:border-navy hover:text-navy'}`}
+              className={`flex items-center gap-1.5 border text-[13px] font-bold px-4 py-2.5 cursor-pointer transition-all font-sans rounded-none ${showStats ? 'bg-primary text-primary-foreground border-primary shadow-md' : 'bg-card border-border text-foreground hover:bg-primary/5 hover:border-primary'}`}
             >
-              📈 통계
+              <BarChart3 size={15} />
+              통계
             </button>
             <button
               onClick={() => setShowBadgeModal(true)}
-              className="bg-card border border-border text-muted-foreground text-[13px] font-semibold px-3.5 py-2 cursor-pointer transition-all hover:border-navy hover:text-navy font-sans"
+              className="flex items-center gap-1.5 bg-card border border-border text-foreground text-[13px] font-bold px-4 py-2.5 cursor-pointer transition-all hover:bg-primary/5 hover:border-primary font-sans rounded-none"
             >
-              아이콘 의미 📖
+              <BookOpen size={15} />
+              아이콘 의미
             </button>
             <button
               onClick={() => { setCompareMode(!compareMode); if (compareMode) setCompareIds([]); }}
-              className={`border text-[13px] font-semibold px-3.5 py-2 cursor-pointer transition-all font-sans ${compareMode ? 'bg-gold/10 border-gold text-gold' : 'bg-card border-border text-muted-foreground hover:border-navy hover:text-navy'}`}
+              className={`flex items-center gap-1.5 border text-[13px] font-bold px-4 py-2.5 cursor-pointer transition-all font-sans rounded-none ${compareMode ? 'bg-accent text-accent-foreground border-accent shadow-md' : 'bg-card border-border text-foreground hover:bg-primary/5 hover:border-primary'}`}
             >
+              {compareMode ? <X size={15} /> : <GitCompare size={15} />}
               {compareMode ? '비교 취소' : '매물 비교'}
             </button>
           </div>
