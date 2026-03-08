@@ -118,12 +118,6 @@ const Index = () => {
 
   const compareItems = useMemo(() => data.filter(i => compareIds.includes(i._id)), [data, compareIds]);
 
-  const openMapModal = useCallback(() => {
-    setShowMapModal(true);
-    setTimeout(() => {
-      initMap(sorted);
-    }, 200);
-  }, [sorted]);
 
   return (
     <div className="min-h-screen bg-background py-5 md:py-10 px-3.5 md:px-5">
