@@ -43,7 +43,7 @@ export function CompareFloatingButton({ compareIds, items, onRemove, onCompare, 
         <DrawerContent className="max-h-[60vh]">
           <DrawerHeader className="pb-2">
             <DrawerTitle className="text-navy font-extrabold">
-              선택된 매물 ({compareIds.length}/10)
+              선택된 매물 ({compareIds.length}/20)
             </DrawerTitle>
           </DrawerHeader>
 

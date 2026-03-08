@@ -1,7 +1,10 @@
-import { useState } from 'react';
-import { ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { ArrowUpDown, ArrowUp, ArrowDown, Image, FileSpreadsheet } from 'lucide-react';
 import { ListingItem } from '@/types/listing';
 import { toNumMan, formatPrice, getPyungPrice } from '@/lib/listing-utils';
+import { toPng } from 'html-to-image';
+import * as XLSX from 'xlsx';
+import { toast } from 'sonner';
 
 type SortKey = 'price' | 'pyung' | 'supply' | 'exclusive' | null;
 type SortDir = 'asc' | 'desc';
@@ -19,9 +22,23 @@ function getNumericValue(item: ListingItem, key: SortKey): number {
   return 0;
 }
 
+const ROW_DEFS: { label: string; getValue: (i: ListingItem) => string; sortKey?: SortKey; highlight?: boolean }[] = [
+  { label: '사업유형', getValue: i => i['사업유형'] },
+  { label: '매매가', getValue: i => formatPrice(toNumMan(i['거래가(숫자)'])), sortKey: 'price', highlight: true },
+  { label: '평당가', getValue: i => `${getPyungPrice(i).toLocaleString()}만`, sortKey: 'pyung', highlight: true },
+  { label: '대지면적', getValue: i => `${i['공급']}㎡`, sortKey: 'supply' },
+  { label: '전용면적', getValue: i => `${i['전용']}㎡`, sortKey: 'exclusive' },
+  { label: '부동산유형', getValue: i => i['부동산유형'] },
+  { label: '층수', getValue: i => i['층수'] },
+  { label: '1+1 가능', getValue: i => i['1+1 가능'] || '-' },
+  { label: '주소', getValue: i => i['주소'] || '-' },
+  { label: '태그', getValue: i => i['태그'] || '-' },
+];
+
 export function CompareModal({ items, onClose }: CompareModalProps) {
   const [sortKey, setSortKey] = useState<SortKey>(null);
   const [sortDir, setSortDir] = useState<SortDir>('asc');
+  const tableRef = useRef<HTMLDivElement>(null);
 
   if (items.length === 0) return null;
 
@@ -42,6 +59,34 @@ export function CompareModal({ items, onClose }: CompareModalProps) {
       })
     : items;
 
+  const handleSaveImage = async () => {
+    if (!tableRef.current) return;
+    try {
+      const dataUrl = await toPng(tableRef.current, { backgroundColor: '#ffffff', pixelRatio: 2 });
+      const link = document.createElement('a');
+      link.download = `매물비교_${new Date().toLocaleDateString('ko-KR')}.png`;
+      link.href = dataUrl;
+      link.click();
+      toast.success('이미지가 저장되었습니다!');
+    } catch {
+      toast.error('이미지 저장에 실패했습니다.');
+    }
+  };
+
+  const handleSaveExcel = () => {
+    try {
+      const headers = ['항목', ...sortedItems.map(i => `${i['구역명']} - ${i['물건명']}`)];
+      const rows = ROW_DEFS.map(row => [row.label, ...sortedItems.map(i => row.getValue(i))]);
+      const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, '매물비교');
+      XLSX.writeFile(wb, `매물비교_${new Date().toLocaleDateString('ko-KR')}.xlsx`);
+      toast.success('엑셀 파일이 저장되었습니다!');
+    } catch {
+      toast.error('엑셀 저장에 실패했습니다.');
+    }
+  };
+
   const SortIcon = ({ k }: { k: SortKey }) => {
     if (sortKey !== k) return <ArrowUpDown size={12} className="inline ml-1 text-muted-foreground" />;
     return sortDir === 'asc'
@@ -53,9 +98,28 @@ export function CompareModal({ items, onClose }: CompareModalProps) {
     <div className="fixed inset-0 bg-foreground/50 z-[1000] flex items-center justify-center p-5" onClick={onClose}>
       <div className="bg-card max-w-[900px] w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 relative" onClick={e => e.stopPropagation()}>
         <button onClick={onClose} className="absolute top-5 right-5 bg-transparent border-none text-2xl text-muted-foreground cursor-pointer leading-none hover:text-navy">×</button>
-        <h2 className="text-xl md:text-2xl font-extrabold text-navy mb-6 pr-10">매물 비교 ({items.length}개)</h2>
+        
+        <div className="flex items-center justify-between mb-6 pr-10">
+          <h2 className="text-xl md:text-2xl font-extrabold text-navy">매물 비교 ({items.length}개)</h2>
+          <div className="flex gap-2">
+            <button
+              onClick={handleSaveImage}
+              className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold border border-border bg-secondary/50 text-foreground cursor-pointer hover:bg-secondary transition-colors"
+            >
+              <Image size={14} />
+              이미지 저장
+            </button>
+            <button
+              onClick={handleSaveExcel}
+              className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold border border-border bg-secondary/50 text-foreground cursor-pointer hover:bg-secondary transition-colors"
+            >
+              <FileSpreadsheet size={14} />
+              엑셀 저장
+            </button>
+          </div>
+        </div>
 
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto" ref={tableRef}>
           <table className="w-full border-collapse text-sm">
             <thead>
               <tr className="border-b-2 border-gold">
@@ -69,16 +133,13 @@ export function CompareModal({ items, onClose }: CompareModalProps) {
               </tr>
             </thead>
             <tbody>
-              <CompareRow label="사업유형" items={sortedItems} getValue={i => i['사업유형']} />
-              <SortableRow label="매매가" sortKey="price" onSort={toggleSort} SortIcon={SortIcon} items={sortedItems} getValue={i => formatPrice(toNumMan(i['거래가(숫자)']))} highlight />
-              <SortableRow label="평당가" sortKey="pyung" onSort={toggleSort} SortIcon={SortIcon} items={sortedItems} getValue={i => `${getPyungPrice(i).toLocaleString()}만`} highlight />
-              <SortableRow label="대지면적" sortKey="supply" onSort={toggleSort} SortIcon={SortIcon} items={sortedItems} getValue={i => `${i['공급']}㎡`} />
-              <SortableRow label="전용면적" sortKey="exclusive" onSort={toggleSort} SortIcon={SortIcon} items={sortedItems} getValue={i => `${i['전용']}㎡`} />
-              <CompareRow label="부동산유형" items={sortedItems} getValue={i => i['부동산유형']} />
-              <CompareRow label="층수" items={sortedItems} getValue={i => i['층수']} />
-              <CompareRow label="1+1 가능" items={sortedItems} getValue={i => i['1+1 가능'] || '-'} />
-              <CompareRow label="주소" items={sortedItems} getValue={i => i['주소'] || '-'} />
-              <CompareRow label="태그" items={sortedItems} getValue={i => i['태그'] || '-'} />
+              {ROW_DEFS.map(row =>
+                row.sortKey ? (
+                  <SortableRow key={row.label} label={row.label} sortKey={row.sortKey} onSort={toggleSort} SortIcon={SortIcon} items={sortedItems} getValue={row.getValue} highlight={row.highlight} />
+                ) : (
+                  <CompareRow key={row.label} label={row.label} items={sortedItems} getValue={row.getValue} />
+                )
+              )}
             </tbody>
           </table>
         </div>

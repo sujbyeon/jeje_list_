@@ -113,7 +113,7 @@ const Index = () => {
   const toggleCompareId = (id: string) => {
     setCompareIds(prev => {
       if (prev.includes(id)) return prev.filter(x => x !== id);
-      if (prev.length >= 10) return prev;
+      if (prev.length >= 20) return prev;
       return [...prev, id];
     });
   };
