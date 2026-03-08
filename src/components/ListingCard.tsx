@@ -67,19 +67,19 @@ export function ListingCard({ item, isFav, onToggleFav, zoneStats, isCompareMode
       </div>
 
       {/* Actions */}
-      <div className="flex flex-row md:flex-col gap-1.5 min-w-[105px] shrink-0">
+      <div className="flex flex-row md:flex-col gap-1 min-w-[95px] shrink-0">
         <a
           href={item['상세보기']}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex-1 md:flex-none px-3.5 py-2.5 text-xs font-bold text-center transition-all border border-primary bg-primary text-primary-foreground hover:bg-gold hover:border-gold flex items-center justify-center min-h-[38px] cursor-pointer no-underline"
+          className="flex-1 md:flex-none px-3 py-2 text-[11px] font-semibold text-center transition-all border border-primary bg-primary text-primary-foreground hover:bg-gold hover:border-gold flex items-center justify-center min-h-[34px] cursor-pointer no-underline"
         >
           상세보기
         </a>
         {addr && (
           <button
             onClick={() => openNaverMap(addr, locUrl)}
-            className="flex-1 md:flex-none px-3.5 py-2.5 text-xs font-bold text-center transition-all border border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-700 hover:text-card flex items-center justify-center min-h-[38px] cursor-pointer font-sans"
+            className="flex-1 md:flex-none px-3 py-2 text-[11px] font-semibold text-center transition-all border border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-700 hover:text-card flex items-center justify-center min-h-[34px] cursor-pointer font-sans"
           >
             지도
           </button>
@@ -89,14 +89,14 @@ export function ListingCard({ item, isFav, onToggleFav, zoneStats, isCompareMode
             if (ok) toast.success('매물 정보가 클립보드에 복사되었습니다!');
             else toast.error('공유에 실패했습니다.');
           })}
-          className="flex-1 md:flex-none px-3.5 py-2.5 text-xs font-bold text-center transition-all border border-border bg-card text-muted-foreground hover:bg-secondary flex items-center justify-center min-h-[38px] cursor-pointer font-sans"
+          className="flex-1 md:flex-none px-3 py-2 text-[11px] font-semibold text-center transition-all border border-border bg-card text-muted-foreground hover:bg-secondary flex items-center justify-center min-h-[34px] cursor-pointer font-sans"
         >
           공유
         </button>
         {isCompareMode && (
           <button
             onClick={onCompareToggle}
-            className={`flex-1 md:flex-none px-3.5 py-2.5 text-xs font-bold text-center transition-all border flex items-center justify-center min-h-[38px] cursor-pointer font-sans ${isSelected ? 'border-gold bg-gold/10 text-gold' : 'border-border bg-card text-muted-foreground hover:bg-secondary'}`}
+            className={`flex-1 md:flex-none px-3 py-2 text-[11px] font-semibold text-center transition-all border flex items-center justify-center min-h-[34px] cursor-pointer font-sans ${isSelected ? 'border-gold bg-gold/10 text-gold' : 'border-border bg-card text-muted-foreground hover:bg-secondary'}`}
           >
             {isSelected ? '✓ 선택됨' : '비교'}
           </button>

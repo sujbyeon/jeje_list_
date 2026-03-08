@@ -28,7 +28,7 @@ export function StatsBanner({
 
   return (
     <div className="bg-card border-t-2 border-t-gold border-b border-border px-4 py-2.5 mb-5 flex items-center gap-2.5 text-xs flex-wrap">
-      <span className="text-[15px] font-extrabold text-navy">{label}</span>
+      <span className="text-[13px] font-bold text-navy">{label}</span>
       <span className="text-muted-foreground font-semibold"><strong className="text-foreground font-bold">{count}개</strong></span>
       <span className="text-border">|</span>
       <span className="text-muted-foreground font-semibold">평균 <strong className="text-foreground font-bold">{formatPrice(Math.round(avgPrice))}</strong></span>

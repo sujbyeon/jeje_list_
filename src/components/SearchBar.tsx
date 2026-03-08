@@ -21,12 +21,12 @@ export function SearchBar({
         value={searchTerm}
         onChange={e => onSearchChange(e.target.value)}
         placeholder="매물명, 태그 검색"
-        className="flex-1 min-w-0 px-4 py-3 border-none border-r border-border text-sm outline-none bg-card focus:bg-primary/5 font-sans"
+        className="flex-1 min-w-0 px-3.5 py-2.5 border-none border-r border-border text-xs outline-none bg-card focus:bg-primary/5 font-sans"
       />
       <select
         value={sortOption}
         onChange={e => onSortChange(e.target.value as SortOption)}
-        className="px-3.5 py-3 border-none border-r border-border font-bold text-[13px] bg-card cursor-pointer min-h-[46px] min-w-[120px] font-sans text-foreground focus:outline-none"
+        className="px-3 py-2.5 border-none border-r border-border font-semibold text-xs bg-card cursor-pointer min-h-[40px] min-w-[110px] font-sans text-foreground focus:outline-none"
       >
         <option value="priceLow">낮은 매매가</option>
         <option value="pyungLow">낮은 평당가</option>
@@ -34,13 +34,13 @@ export function SearchBar({
       </select>
       <button
         onClick={onToggleFavMode}
-        className={`px-4 py-3 border-none border-r border-border bg-card cursor-pointer font-bold text-[13px] transition-all min-h-[46px] whitespace-nowrap font-sans ${favMode ? 'bg-accent/10 text-gold' : 'text-muted-foreground'}`}
+        className={`px-3.5 py-2.5 border-none border-r border-border bg-card cursor-pointer font-semibold text-xs transition-all min-h-[40px] whitespace-nowrap font-sans ${favMode ? 'bg-accent/10 text-gold' : 'text-muted-foreground'}`}
       >
         ★ 관심
       </button>
       <Link
         to="/map"
-        className="px-4 py-3 border-none bg-card text-accent font-bold text-[13px] cursor-pointer transition-all min-h-[46px] whitespace-nowrap font-sans hover:bg-accent hover:text-accent-foreground flex items-center no-underline"
+        className="px-3.5 py-2.5 border-none bg-card text-accent font-semibold text-xs cursor-pointer transition-all min-h-[40px] whitespace-nowrap font-sans hover:bg-accent hover:text-accent-foreground flex items-center no-underline"
       >
         🗺️ 지도
       </Link>
