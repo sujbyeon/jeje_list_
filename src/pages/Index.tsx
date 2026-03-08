@@ -137,6 +137,12 @@ const Index = () => {
           </p>
           <div className="flex gap-2 mt-3 md:absolute md:top-0 md:right-0 md:mt-0">
             <button
+              onClick={() => setShowStats(!showStats)}
+              className={`border text-[13px] font-semibold px-3.5 py-2 cursor-pointer transition-all font-sans ${showStats ? 'bg-gold/10 border-gold text-gold' : 'bg-card border-border text-muted-foreground hover:border-navy hover:text-navy'}`}
+            >
+              📈 통계
+            </button>
+            <button
               onClick={() => setShowBadgeModal(true)}
               className="bg-card border border-border text-muted-foreground text-[13px] font-semibold px-3.5 py-2 cursor-pointer transition-all hover:border-navy hover:text-navy font-sans"
             >
