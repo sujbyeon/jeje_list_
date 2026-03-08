@@ -5,8 +5,8 @@ interface TypeBadgeProps {
 }
 
 export function TypeBadge({ type }: TypeBadgeProps) {
-  const style = TYPE_STYLES[type];
-  if (!style) return null;
+  if (!type) return null;
+  const style = TYPE_STYLES[type] || { bg: '#f3f4f6', text: '#374151', border: '#d1d5db' };
   return (
     <span
       className="inline-block text-[11px] font-bold px-[7px] py-[2px] whitespace-nowrap"
