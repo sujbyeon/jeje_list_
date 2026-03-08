@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
-import { BarChart3, BookOpen } from 'lucide-react';
+import { BarChart3, BookOpen, GitCompare } from 'lucide-react';
 import { useListings, useFavorites } from '@/hooks/useListings';
 import { SortOption, BadgeFilterType } from '@/types/listing';
 import { toNumMan, formatPrice, getArea, getUnitPrice, computeZoneStats, getLatestDate } from '@/lib/listing-utils';
