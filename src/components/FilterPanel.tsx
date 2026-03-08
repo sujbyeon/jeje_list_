@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, RotateCcw } from 'lucide-react';
 import { ListingItem, TYPE_ORDER, TYPE_TAB_COLORS } from '@/types/listing';
 import { useIsMobile } from '@/hooks/use-mobile';
 
