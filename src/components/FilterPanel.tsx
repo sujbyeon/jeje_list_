@@ -74,15 +74,15 @@ export function FilterPanel({
   return (
     <div className="bg-card border border-border shadow-sm mb-4 overflow-hidden">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-1.5 px-4 py-2 bg-secondary/50 border-b border-border text-[11px] font-medium text-muted-foreground min-h-[32px]">
+      <div className="flex items-center gap-1.5 px-4 py-2.5 bg-secondary/50 border-b border-border text-xs md:text-sm font-medium text-muted-foreground min-h-[36px]">
         <span className="text-navy font-bold">전체</span>
         {breadcrumbParts.map((p, i) => (
           <span key={i} className="contents">
-            <span className="text-gold text-sm">›</span>
+            <span className="text-gold text-sm md:text-base">›</span>
             <span className="text-navy font-bold">{p}</span>
           </span>
         ))}
-        {hint && <span className="ml-auto text-[11px] text-muted-foreground font-medium hidden md:inline">{hint}</span>}
+        {hint && <span className="ml-auto text-xs text-muted-foreground font-medium hidden md:inline">{hint}</span>}
       </div>
 
       {/* Tier 1: Region - always visible */}
