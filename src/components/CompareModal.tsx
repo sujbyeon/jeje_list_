@@ -61,26 +61,42 @@ export function CompareModal({ items, onClose }: CompareModalProps) {
 
   const handleSaveImage = async () => {
     if (!tableRef.current) return;
-    const wrapper = tableRef.current.parentElement;
+    const el = tableRef.current;
+    const modal = el.closest('[data-compare-modal]') as HTMLElement | null;
+
+    // Save original styles
+    const saved = {
+      elOverflow: el.style.overflow,
+      elWidth: el.style.width,
+      elMinWidth: el.style.minWidth,
+      modalMaxH: modal?.style.maxHeight || '',
+      modalOverflow: modal?.style.overflow || '',
+      modalMaxW: modal?.style.maxWidth || '',
+      modalWidth: modal?.style.width || '',
+    };
+
     try {
-      // Temporarily remove overflow constraints to capture full table
-      const prevTableOverflow = tableRef.current.style.overflow;
-      tableRef.current.style.overflow = 'visible';
-      if (wrapper) {
-        wrapper.dataset.prevMaxH = wrapper.style.maxHeight;
-        wrapper.dataset.prevOverflow = wrapper.style.overflow;
-        wrapper.style.maxHeight = 'none';
-        wrapper.style.overflow = 'visible';
+      // Expand everything to full size for capture
+      const fullWidth = el.scrollWidth;
+      el.style.overflow = 'visible';
+      el.style.width = `${fullWidth}px`;
+      el.style.minWidth = `${fullWidth}px`;
+      if (modal) {
+        modal.style.maxHeight = 'none';
+        modal.style.overflow = 'visible';
+        modal.style.maxWidth = 'none';
+        modal.style.width = `${fullWidth + 64}px`;
       }
 
-      const dataUrl = await toPng(tableRef.current, { backgroundColor: '#ffffff', pixelRatio: 2 });
+      // Wait for reflow
+      await new Promise(r => setTimeout(r, 100));
 
-      // Restore styles
-      tableRef.current.style.overflow = prevTableOverflow;
-      if (wrapper) {
-        wrapper.style.maxHeight = wrapper.dataset.prevMaxH || '';
-        wrapper.style.overflow = wrapper.dataset.prevOverflow || '';
-      }
+      const dataUrl = await toPng(el, {
+        backgroundColor: '#ffffff',
+        pixelRatio: 2,
+        width: fullWidth,
+        height: el.scrollHeight,
+      });
 
       const link = document.createElement('a');
       link.download = `매물비교_${new Date().toLocaleDateString('ko-KR')}.png`;
@@ -88,13 +104,18 @@ export function CompareModal({ items, onClose }: CompareModalProps) {
       link.click();
       toast.success('이미지가 저장되었습니다!');
     } catch {
-      // Restore styles on error
-      tableRef.current.style.overflow = '';
-      if (wrapper) {
-        wrapper.style.maxHeight = '';
-        wrapper.style.overflow = '';
-      }
       toast.error('이미지 저장에 실패했습니다.');
+    } finally {
+      // Restore all styles
+      el.style.overflow = saved.elOverflow;
+      el.style.width = saved.elWidth;
+      el.style.minWidth = saved.elMinWidth;
+      if (modal) {
+        modal.style.maxHeight = saved.modalMaxH;
+        modal.style.overflow = saved.modalOverflow;
+        modal.style.maxWidth = saved.modalMaxW;
+        modal.style.width = saved.modalWidth;
+      }
     }
   };
 
