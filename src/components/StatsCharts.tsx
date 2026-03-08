@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { ListingItem } from '@/types/listing';
 import { toNumMan, getArea, getPyungPrice, isDetachedOrCommercial } from '@/lib/listing-utils';
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LabelList,
   PieChart, Pie, Cell, Legend,
   ScatterChart, Scatter, ZAxis,
 } from 'recharts';
