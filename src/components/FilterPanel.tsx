@@ -228,7 +228,7 @@ function FilterTier({ step, label, active, items, selected, onSelect }: {
           <button
             key={item.key}
             onClick={() => onSelect(item.key)}
-            className={`px-3 md:px-4 py-2.5 md:py-3 border-none border-r border-border bg-card cursor-pointer font-medium text-xs md:text-sm text-muted-foreground transition-all whitespace-nowrap shrink-0 min-h-[42px] md:min-h-[44px] flex items-center gap-1.5 relative hover:bg-secondary/50 hover:text-foreground
+            className={`px-3 md:px-4 py-2.5 md:py-3 border-none border-r border-border bg-card cursor-pointer font-medium text-sm text-muted-foreground transition-all whitespace-nowrap shrink-0 min-h-[42px] md:min-h-[44px] flex items-center gap-1.5 relative hover:bg-secondary/50 hover:text-foreground
               ${selected === item.key ? 'text-navy font-bold bg-card' : ''}`}
           >
             {item.label}
