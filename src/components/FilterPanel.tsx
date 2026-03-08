@@ -148,8 +148,7 @@ function FilterTier({ step, label, active, items, selected, onSelect }: {
             </span>
             {selected === item.key && (
               <span
-                className="absolute bottom-0 left-0 right-0 h-[3px] rounded-t-sm"
-                style={{ background: item.activeColor || 'hsl(var(--primary))' }}
+                className="absolute bottom-0 left-0 right-0 h-[3px] rounded-t-sm bg-gold"
               />
             )}
           </button>
