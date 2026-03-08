@@ -45,50 +45,55 @@ const MapPage = () => {
       const address = (item['주소'] || '').split(',')[0].trim();
       if (!address) return;
 
-      naver.maps.Service.geocode({ query: address }, (status: any, response: any) => {
-        geocoded++;
-        if (status !== naver.maps.Service.Status.OK) {
+      try {
+        naver.maps.Service.geocode({ query: address }, (status: any, response: any) => {
+          geocoded++;
+          if (status !== naver.maps.Service.Status.OK) {
+            if (geocoded === filtered.length) fitBounds(bounds);
+            return;
+          }
+          const r = response.v2?.addresses?.[0];
+          if (!r) return;
+
+          const pos = new naver.maps.LatLng(parseFloat(r.y), parseFloat(r.x));
+          bounds.extend(pos);
+
+          const price = toNumMan(item['거래가(숫자)']);
+          const typeStyle = TYPE_STYLES[item['사업유형']] || { bg: '#f3f4f6', text: '#374151', border: '#d1d5db' };
+
+          const marker = new naver.maps.Marker({
+            position: pos,
+            map: mapRef.current,
+            icon: {
+              content: `<div style="
+                background:${typeStyle.bg};
+                color:${typeStyle.text};
+                border:1.5px solid ${typeStyle.border};
+                padding:3px 7px;
+                font-size:11px;
+                font-weight:800;
+                font-family:'Pretendard Variable',sans-serif;
+                white-space:nowrap;
+                cursor:pointer;
+                box-shadow:0 2px 6px rgba(0,0,0,0.15);
+              ">${formatPrice(price)}</div>`,
+              anchor: new naver.maps.Point(30, 15),
+            },
+          });
+
+          naver.maps.Event.addListener(marker, 'click', () => {
+            setSelectedItem(item);
+          });
+
+          markersRef.current.push(marker);
+
           if (geocoded === filtered.length) fitBounds(bounds);
-          return;
-        }
-        const r = response.v2.addresses[0];
-        if (!r) return;
-
-        const pos = new naver.maps.LatLng(parseFloat(r.y), parseFloat(r.x));
-        bounds.extend(pos);
-
-        const price = toNumMan(item['거래가(숫자)']);
-        const typeStyle = TYPE_STYLES[item['사업유형']] || { bg: '#f3f4f6', text: '#374151', border: '#d1d5db' };
-
-        // Custom HTML marker with price label
-        const marker = new naver.maps.Marker({
-          position: pos,
-          map: mapRef.current,
-          icon: {
-            content: `<div style="
-              background:${typeStyle.bg};
-              color:${typeStyle.text};
-              border:1.5px solid ${typeStyle.border};
-              padding:3px 7px;
-              font-size:11px;
-              font-weight:800;
-              font-family:'Pretendard Variable',sans-serif;
-              white-space:nowrap;
-              cursor:pointer;
-              box-shadow:0 2px 6px rgba(0,0,0,0.15);
-            ">${formatPrice(price)}</div>`,
-            anchor: new naver.maps.Point(30, 15),
-          },
         });
-
-        naver.maps.Event.addListener(marker, 'click', () => {
-          setSelectedItem(item);
-        });
-
-        markersRef.current.push(marker);
-
+      } catch (e) {
+        geocoded++;
+        console.warn('Geocoding failed for:', address, e);
         if (geocoded === filtered.length) fitBounds(bounds);
-      });
+      }
     });
 
     function fitBounds(b: any) {
