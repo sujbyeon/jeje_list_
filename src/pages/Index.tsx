@@ -232,77 +232,8 @@ const Index = () => {
       {showBadgeModal && <BadgeInfoModal onClose={() => setShowBadgeModal(false)} />}
       {showCompare && <CompareModal items={compareItems} onClose={() => setShowCompare(false)} />}
 
-      {/* Map Modal */}
-      {showMapModal && (
-        <div className="fixed inset-0 bg-foreground/50 z-[1000] flex items-center justify-center p-5" onClick={() => setShowMapModal(false)}>
-          <div className="bg-card max-w-[1000px] w-full overflow-hidden" onClick={e => e.stopPropagation()}>
-            <div className="px-5 md:px-6 py-5 border-b border-border flex justify-between items-center">
-              <h2 className="text-xl font-extrabold text-navy">지도 ({sorted.length}개)</h2>
-              <button onClick={() => setShowMapModal(false)} className="bg-transparent border-none text-2xl text-muted-foreground cursor-pointer leading-none hover:text-navy">×</button>
-            </div>
-            <div id="map" className="w-full h-[60vh] md:h-[70vh] min-h-[400px] md:min-h-[500px]" />
-          </div>
-        </div>
-      )}
     </div>
   );
 };
-
-function initMap(data: ListingItem[]) {
-  const naver = (window as any).naver;
-  if (!naver || !data.length) return;
-  const withAddr = data.filter(i => i['주소']);
-  if (!withAddr.length) return;
-
-  const map = new naver.maps.Map('map', {
-    center: new naver.maps.LatLng(37.5665, 126.9780),
-    zoom: 12,
-  });
-
-  const markers: any[] = [];
-  const boundsArray: any[] = [];
-  let processed = 0;
-
-  withAddr.forEach(item => {
-    const address = (item['주소'] || '').split(',')[0].trim();
-    if (!address) return;
-    naver.maps.Service.geocode({ query: address }, (status: any, response: any) => {
-      processed++;
-      if (status !== naver.maps.Service.Status.OK) {
-        if (processed === withAddr.length && boundsArray.length > 0) adjustBounds(map, boundsArray);
-        return;
-      }
-      const r = response.v2.addresses[0];
-      if (!r) return;
-      const position = new naver.maps.LatLng(parseFloat(r.y), parseFloat(r.x));
-      boundsArray.push(position);
-      const price = toNumMan(item['거래가(숫자)']);
-      const marker = new naver.maps.Marker({ position, map, title: item['물건명'] });
-      const infoWindow = new naver.maps.InfoWindow({
-        content: `<div style="padding:15px;min-width:200px;line-height:1.5;font-family:'Pretendard Variable',sans-serif;">
-          <div style="font-weight:800;font-size:14px;color:#022136;margin-bottom:8px;">${item['구역명']} - ${item['물건명']}</div>
-          <div style="font-size:18px;font-weight:900;color:#022136;margin-bottom:6px;">${formatPrice(price)}</div>
-          <div style="font-size:12px;color:#86868B;margin-bottom:10px;">대지 ${item['공급']}㎡ · 전용 ${item['전용']}㎡</div>
-          <a href="${item['상세보기']}" target="_blank" style="display:inline-block;padding:6px 12px;background:#022136;color:white;text-decoration:none;font-size:12px;font-weight:700;">상세보기</a>
-        </div>`,
-      });
-      naver.maps.Event.addListener(marker, 'click', () => {
-        if (infoWindow.getMap()) infoWindow.close();
-        else infoWindow.open(map, marker);
-      });
-      markers.push(marker);
-      if (processed === withAddr.length) adjustBounds(map, boundsArray);
-    });
-  });
-}
-
-function adjustBounds(map: any, arr: any[]) {
-  const naver = (window as any).naver;
-  if (!arr.length) return;
-  if (arr.length === 1) { map.setCenter(arr[0]); map.setZoom(15); return; }
-  const bounds = new naver.maps.LatLngBounds();
-  arr.forEach(p => bounds.extend(p));
-  map.fitBounds(bounds);
-}
 
 export default Index;
