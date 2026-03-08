@@ -85,7 +85,10 @@ export function ListingCard({ item, isFav, onToggleFav, zoneStats, isCompareMode
           </button>
         )}
         <button
-          onClick={() => shareKakao(item)}
+          onClick={() => shareKakao(item).then(ok => {
+            if (ok) toast.success('매물 정보가 클립보드에 복사되었습니다!');
+            else toast.error('공유에 실패했습니다.');
+          })}
           className="flex-1 md:flex-none px-3.5 py-2.5 text-xs font-bold text-center transition-all border border-border bg-card text-muted-foreground hover:bg-secondary flex items-center justify-center min-h-[38px] cursor-pointer font-sans"
         >
           공유
