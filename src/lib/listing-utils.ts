@@ -32,6 +32,7 @@ export function formatDateShort(s: string): string {
 }
 
 export function isDetachedOrCommercial(item: ListingItem): boolean {
+  if ((item['물건명'] || '').includes('협동주택')) return false;
   return (item['부동산유형'] || '').includes('단독') || (item['부동산유형'] || '').includes('상가');
 }
 
