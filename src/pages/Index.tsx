@@ -112,7 +112,7 @@ const Index = () => {
   const toggleCompareId = (id: string) => {
     setCompareIds(prev => {
       if (prev.includes(id)) return prev.filter(x => x !== id);
-      if (prev.length >= 4) return prev;
+      if (prev.length >= 10) return prev;
       return [...prev, id];
     });
   };
@@ -181,7 +181,7 @@ const Index = () => {
         {/* Compare floating bar */}
         {compareMode && compareIds.length > 0 && (
           <div className="sticky top-0 z-50 bg-card border border-gold p-3 mb-4 flex items-center justify-between animate-fade-in">
-            <span className="text-sm font-bold text-navy">{compareIds.length}개 매물 선택됨 (최대 4개)</span>
+            <span className="text-sm font-bold text-navy">{compareIds.length}개 매물 선택됨 (최대 10개)</span>
             <button
               onClick={() => setShowCompare(true)}
               className="bg-primary text-primary-foreground px-4 py-2 text-sm font-bold cursor-pointer border-none hover:bg-gold transition-all"

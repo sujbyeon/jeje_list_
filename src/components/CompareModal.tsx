@@ -37,6 +37,7 @@ export function CompareModal({ items, onClose }: CompareModalProps) {
               <CompareRow label="부동산유형" items={items} getValue={i => i['부동산유형']} />
               <CompareRow label="층수" items={items} getValue={i => i['층수']} />
               <CompareRow label="1+1 가능" items={items} getValue={i => i['1+1 가능'] || '-'} />
+              <CompareRow label="주소" items={items} getValue={i => i['주소'] || '-'} />
               <CompareRow label="태그" items={items} getValue={i => i['태그'] || '-'} />
             </tbody>
           </table>
