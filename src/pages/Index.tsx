@@ -122,12 +122,12 @@ const Index = () => {
 
 
   return (
-    <div className="min-h-screen bg-background py-5 md:py-10 px-3.5 md:px-5">
+    <div className="min-h-screen bg-background py-6 md:py-10 px-4 md:px-6">
       <div className="max-w-[1200px] mx-auto">
         {/* Header */}
-        <header className="mb-4 md:mb-6 border-l-[3px] border-l-gold pl-5">
-          <h1 className="text-3xl md:text-[42px] font-extrabold text-navy mb-2">재개발 구역 매물</h1>
-          <p className="text-sm md:text-lg text-gold font-semibold">
+        <header className="mb-5 md:mb-8 border-l-[3px] border-l-gold pl-5">
+          <h1 className="text-2xl md:text-4xl font-extrabold text-navy mb-1 tracking-tight">재개발 구역 매물</h1>
+          <p className="text-[13px] md:text-base text-gold font-medium">
             {loading ? '데이터 로딩 중...' : latestDate ? `${latestDate} 업데이트` : '매물 정보'}
           </p>
         </header>
