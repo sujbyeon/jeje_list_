@@ -26,7 +26,7 @@ jobs:
       - run: npm ci
       - run: npm run build
         env:
-          BASE_URL: /code-whisperer-23-a2e/
+          BASE_URL: /jeje_list_/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
