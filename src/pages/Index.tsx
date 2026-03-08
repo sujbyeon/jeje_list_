@@ -23,6 +23,7 @@ const Index = () => {
   const [favMode, setFavMode] = useState(false);
   const [badgeFilter, setBadgeFilter] = useState<BadgeFilterType>(null);
   const [showBadgeModal, setShowBadgeModal] = useState(false);
+  const [showStats, setShowStats] = useState(false);
   const [showMapModal, setShowMapModal] = useState(false);
   const [compareMode, setCompareMode] = useState(false);
   const [compareIds, setCompareIds] = useState<string[]>([]);
