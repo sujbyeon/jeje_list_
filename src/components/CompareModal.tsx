@@ -142,7 +142,7 @@ export function CompareModal({ items, onClose }: CompareModalProps) {
 
   return (
     <div className="fixed inset-0 bg-foreground/50 z-[1000] flex items-center justify-center p-5" onClick={onClose}>
-      <div className="bg-card max-w-[900px] w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 relative" onClick={e => e.stopPropagation()}>
+      <div data-compare-modal className="bg-card max-w-[900px] w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 relative" onClick={e => e.stopPropagation()}>
         <button onClick={onClose} className="absolute top-5 right-5 bg-transparent border-none text-2xl text-muted-foreground cursor-pointer leading-none hover:text-navy">×</button>
         
         <h2 className="text-xl md:text-2xl font-extrabold text-navy mb-4 pr-10">매물 비교 ({items.length}개)</h2>
