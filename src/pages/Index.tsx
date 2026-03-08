@@ -149,11 +149,11 @@ const Index = () => {
             아이콘 의미
           </button>
           <button
-            onClick={() => { setCompareMode(!compareMode); if (compareMode) setCompareIds([]); }}
-            className={`flex items-center gap-1.5 text-[13px] font-bold px-4 py-2 cursor-pointer transition-all whitespace-nowrap rounded-none border ${compareMode ? 'bg-accent text-accent-foreground border-accent shadow-md' : 'bg-secondary/50 border-border text-foreground hover:bg-primary/5 hover:border-primary'}`}
+            onClick={() => { setCompareIds([]); }}
+            className={`flex items-center gap-1.5 text-[13px] font-bold px-4 py-2 cursor-pointer transition-all whitespace-nowrap rounded-none border ${compareIds.length > 0 ? 'bg-accent text-accent-foreground border-accent shadow-md' : 'bg-secondary/50 border-border text-foreground hover:bg-primary/5 hover:border-primary'}`}
           >
-            {compareMode ? <X size={15} /> : <GitCompare size={15} />}
-            {compareMode ? '비교 취소' : '매물 비교'}
+            <GitCompare size={15} />
+            {compareIds.length > 0 ? `비교 초기화 (${compareIds.length})` : '매물 비교'}
           </button>
         </div>
 
