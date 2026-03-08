@@ -133,7 +133,7 @@ function FilterTier({ step, label, active, items, selected, onSelect }: {
         </div>
         <div className={`text-[9px] md:text-[10px] font-bold tracking-wide ${active ? 'text-navy' : 'text-muted-foreground'}`}>{label}</div>
       </div>
-      <div className="flex flex-1 overflow-x-auto scrollbar-hide">
+      <div className="flex flex-1 flex-wrap">
         {items.map(item => (
           <button
             key={item.key}
