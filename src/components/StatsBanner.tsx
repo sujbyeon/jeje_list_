@@ -55,7 +55,7 @@ function BadgeFilterBtn({ active, onClick, children }: { active: boolean; onClic
     <button
       type="button"
       onClick={onClick}
-      className={`cursor-pointer px-3 py-1.5 rounded-md border-[1.5px] transition-all select-none inline-flex items-center gap-1.5 text-xs font-bold ${active ? 'border-primary bg-primary/10 text-navy shadow-sm' : 'border-border bg-secondary/50 text-muted-foreground hover:bg-secondary hover:border-primary/50 hover:text-foreground'}`}
+      className={`cursor-pointer px-2.5 py-1 rounded-full border transition-all select-none inline-flex items-center gap-1 text-xs font-semibold ${active ? 'border-primary/40 bg-primary/8 text-foreground shadow-sm' : 'border-transparent bg-secondary/30 text-muted-foreground hover:bg-secondary/60'}`}
     >
       {children}
     </button>
