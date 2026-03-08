@@ -43,6 +43,12 @@ export function FilterPanel({
     return { list: z, counts };
   }, [typePool]);
 
+  const hasActiveFilter = currentRegion !== '전체' || currentType !== '전체' || currentZone !== '전체';
+
+  const handleReset = () => {
+    onRegionChange('전체');
+  };
+
   const breadcrumbParts: string[] = [];
   if (currentRegion !== '전체') breadcrumbParts.push(currentRegion);
   if (currentType !== '전체') breadcrumbParts.push(currentType);
