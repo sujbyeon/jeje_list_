@@ -11,6 +11,7 @@ const MapPage = () => {
   const markersRef = useRef<any[]>([]);
   const [selectedItem, setSelectedItem] = useState<ListingItem | null>(null);
   const [filterType, setFilterType] = useState('전체');
+  const [mapError, setMapError] = useState<string | null>(null);
 
   const types = useMemo(() => {
     const set = new Set(data.map(i => i['사업유형']).filter(Boolean));
