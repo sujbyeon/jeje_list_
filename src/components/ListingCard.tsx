@@ -60,7 +60,7 @@ export function ListingCard({ item, isFav, onToggleFav, zoneStats, isCompareMode
           {isCheap && <span className="text-[11px] font-bold text-green-600">💚 저렴</span>}
         </div>
         <div className="text-xs text-muted-foreground font-normal leading-relaxed">
-          대지 {item['공급']}㎡ · 전용 {item['전용']}㎡{floorStr ? ` · ${floorStr}` : ''} · {tags}{dateStr ? ` · ${dateStr}` : ''}
+          대지 {item['공급']}㎡ · 전용 {item['전용']}㎡{floorStr ? ` · ${floorStr}` : ''} · <HighlightText text={tags} highlight={searchTerm} />{dateStr ? ` · ${dateStr}` : ''}
         </div>
         {desc && <div className="text-[11px] text-muted-foreground mt-0.5 leading-relaxed">{desc}</div>}
       </div>
