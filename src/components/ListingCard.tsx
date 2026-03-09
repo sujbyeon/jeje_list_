@@ -52,8 +52,9 @@ export function ListingCard({ item, isFav, onToggleFav, zoneStats, isCompareMode
       {/* Subject */}
       <div className="flex-1 min-w-0">
         <div className="text-sm md:text-[15px] font-bold text-navy mb-1 flex items-center gap-1.5 flex-wrap pr-10 md:pr-0">
-          {item['물건명']}
+          <HighlightText text={item['물건명']} highlight={searchTerm} />
           <TypeBadge type={item['사업유형']} />
+          {isNew && <span className="text-[11px] font-bold text-blue-600">🆕 신규</span>}
           {plusType && <span className="text-[11px] font-bold text-purple-600">💜 1+1 {plusType}</span>}
           {isUrgent && <span className="text-[11px] font-bold text-red-600">🚨 급매</span>}
           {isCheap && <span className="text-[11px] font-bold text-green-600">💚 저렴</span>}
