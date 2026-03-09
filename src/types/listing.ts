@@ -19,7 +19,7 @@ export interface ListingItem {
   [key: string]: string;
 }
 
-export type SortOption = 'priceLow' | 'pyungLow' | 'landHigh';
+export type SortOption = 'priceLow' | 'pyungLow' | 'landHigh' | 'newest' | 'landHighDesc';
 export type BadgeFilterType = 'urgent' | 'cheap' | 'plus' | null;
 
 export const TYPE_ORDER = ['동의서', '모아타운', '신속통합기획', '역세권', '재개발', '재건축'] as const;

@@ -31,6 +31,8 @@ export function SearchBar({
         <option value="priceLow">낮은 매매가</option>
         <option value="pyungLow">낮은 평당가</option>
         <option value="landHigh">대지지분순</option>
+        <option value="landHighDesc">높은 대지지분순</option>
+        <option value="newest">최신등록순</option>
       </select>
       <button
         onClick={onToggleFavMode}
