@@ -3,6 +3,7 @@ import { BarChart3, BookOpen, GitCompare } from 'lucide-react';
 import { useListings, useFavorites } from '@/hooks/useListings';
 import { SortOption, BadgeFilterType } from '@/types/listing';
 import { toNumMan, formatPrice, getArea, getUnitPrice, computeZoneStats, getLatestDate } from '@/lib/listing-utils';
+import { parseListingDate } from '@/lib/date-utils';
 import { FilterPanel } from '@/components/FilterPanel';
 import { SearchBar } from '@/components/SearchBar';
 import { StatsBanner } from '@/components/StatsBanner';
