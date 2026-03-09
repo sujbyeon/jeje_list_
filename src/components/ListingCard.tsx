@@ -17,6 +17,7 @@ interface ListingCardProps {
   isCompareMode?: boolean;
   isSelected?: boolean;
   onCompareToggle?: () => void;
+  searchTerm?: string;
 }
 
 export function ListingCard({ item, isFav, onToggleFav, zoneStats, isCompareMode, isSelected, onCompareToggle }: ListingCardProps) {
